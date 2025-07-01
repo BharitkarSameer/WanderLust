@@ -1,0 +1,107 @@
+
+
+    <div class="completenavbar">
+        <div class="navbar"  >
+            <div class="navbar-left">
+                <span class="logo"><a href="/"><i class="fa-solid fa-compass"></i></a><a href="/listings">&nbsp;&nbsp;&nbsp;WanderLust</a></span>
+                <!-- <a class="additionachors" href="/listings">All Listings</a> -->
+                
+            </div>
+
+            <!-- <div class="navbar-center">
+                <form action="/listings/search" method="GET" class="search-form">
+                    <input type="text" name="q" class="search-input" placeholder="Search listings..." />
+                    <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                </form>
+            </div> -->
+
+            <div class="navbar-center">
+            <form id="searchForm" class="search-form" autocomplete="off">
+                <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search listings..."
+                />
+                <button type="submit" class="search-btn"><i class="fas fa-search"></i></button>
+                <div id="searchSuggestions" class="search-suggestions"></div>
+            </form>
+            </div>
+
+
+            <div class="navbar-right">
+                <a class="additionachors" href="/newlistings">Become a Host</a>
+                <% if(!user){ %>
+                <a class="additionachors" href="/signup" style="opacity: 1;">Sign Up</a>
+                <a class="additionachors" href="/login" style="opacity: 1;">Log In</a>
+                <% } %>
+                <% if(user){ %>
+                <a class="additionachors" href="/logout">Log Out</a>
+                <% } %>
+            </div>
+        </div>
+
+        <hr>
+
+    </div>
+
+
+
+    <script>
+        const searchInput = document.getElementById("searchInput");
+        const suggestionsBox = document.getElementById("searchSuggestions");
+        const searchForm = document.getElementById("searchForm");
+
+        let selectedListingId = null;
+
+        searchInput.addEventListener("input", () => {
+            const query = searchInput.value.toLowerCase().trim();
+            suggestionsBox.innerHTML = "";
+            selectedListingId = null;
+
+            if (query.length === 0) {
+            suggestionsBox.style.display = "none";
+            return;
+            }
+
+            const matches = listingsArr.filter(l =>
+            l.title.toLowerCase().includes(query) ||
+            l.description.toLowerCase().includes(query)
+            );
+
+            if (matches.length === 0) {
+            suggestionsBox.style.display = "none";
+            return;
+            }
+
+            matches.forEach(listing => {
+            const item = document.createElement("div");
+            item.classList.add("search-suggestion-item");
+            item.innerText = listing.title;
+
+            item.addEventListener("click", () => {
+                searchInput.value = listing.title;
+                selectedListingId = listing.id;
+                suggestionsBox.innerHTML = "";
+                suggestionsBox.style.display = "none";
+            });
+
+            suggestionsBox.appendChild(item);
+            });
+
+            suggestionsBox.style.display = "block";
+        });
+
+        searchForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            if (selectedListingId) {
+            window.location.href = `/listings/${selectedListingId}`;
+            } else {
+            alert("Please select a listing from the suggestions.");
+            }
+        });
+    </script>
+
+
+
+

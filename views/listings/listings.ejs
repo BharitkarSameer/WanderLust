@@ -1,0 +1,128 @@
+  <% layout('layout/boilerplate') -%>
+<body>
+
+<script>
+    const listingsArr = <%- JSON.stringify(listingsdata.map(listing => ({
+      title: listing.title,
+      description: listing.description,
+      id: listing._id
+    }))) %>;
+</script>
+
+  <!-- <h2 id="listingsheading">Popular Listings</h2> -->
+<!-- Font Awesome CDN (place in <head>) -->
+
+
+  <div class="category-bar-container">
+    <button class="scroll-btn left"><i class="fas fa-chevron-left"></i></button>
+
+    <div class="category-bar">
+      <div class="category-item active">
+        <i class="fas fa-city"></i>
+        <span>Iconic cities</span>
+      </div>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-globe"></i><span>All</span></a>
+        <a href="/listings?category=Beach" class="category-item"><i class="fas fa-umbrella-beach"></i><span>Beach</span></a>
+        <a href="/listings?category=Mountain" class="category-item"><i class="fas fa-mountain"></i><span>Mountain</span></a>
+        <a href="/listings?category=Treehouse" class="category-item"><i class="fas fa-tree"></i><span>Treehouse</span></a>
+        <a href="/listings?category=Skiing" class="category-item"><i class="fas fa-snowflake"></i><span>Skiing</span></a>
+        <a href="/listings?category=Urban" class="category-item"><i class="fas fa-city"></i><span>Urban</span></a>
+        <a href="/listings?category=Villa" class="category-item"><i class="fas fa-hotel"></i><span>Villa</span></a>
+        <a href="/listings?category=Lakefront" class="category-item"><i class="fas fa-water"></i><span>Lakefront</span></a>
+        <a href="/listings?category=Historic" class="category-item"><i class="fas fa-landmark"></i><span>Historic</span></a>
+        <a href="/listings?category=Desert" class="category-item"><i class="fas fa-sun"></i><span>Desert</span></a>
+        <a href="/listings?category=Island" class="category-item"><i class="fa-solid fa-person-swimming"></i><span>Island</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-campground"></i><span>Camping</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-spa"></i><span>Wellness</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-bolt"></i><span>Eco Stays</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-fire"></i><span>Trending</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-dog"></i><span>Pet-Friendly</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-bicycle"></i><span>Adventures</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-wifi"></i><span>Remote Work</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-glass-cheers"></i><span>Party Spots</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-wine-glass-alt"></i><span>Vineyards</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-moon"></i><span>Nightlife</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-rocket"></i><span>OMG!</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-couch"></i><span>Cozy Corners</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-paw"></i><span>Animal Friendly</span></a>
+        <a href="/listings?category=General" class="category-item"><i class="fas fa-mug-hot"></i><span>Breakfast Included</span></a>
+        
+
+
+    </div>
+
+    <button class="scroll-btn right"><i class="fas fa-chevron-right"></i></button>
+
+    <button class="filter-btn"><i class="fas fa-sliders-h"></i> Filters</button>
+
+    <div class="tax-toggle-wrapper">
+      <label class="tax-toggle-label">
+        Display total before taxes
+        <input type="checkbox" id="tax-toggle">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+  </div>
+
+  <div class="listingcardcontainer">
+    
+    <% for(let listingdata of listingsdata){ %>
+      <a href="/listings/<%= listingdata._id %>">
+        <div class="listingcard"> 
+        <img src="<%= listingdata.image.url %>" >
+        <p><%= listingdata.title  %></p>
+        <p class="tax-toggle-before" id="listingcardprice">&#8377; <%= listingdata.price.toLocaleString("en-IN") %>/night</p>
+        <p class="tax-toggle-gst" id="listingcardpricegst">&#8377; <%= Math.round(listingdata.price * 1.18).toLocaleString("en-IN") %>/night (incl. GST)</p>
+
+        </div>
+      </a>
+    <% } %>
+  </div>
+
+
+  <script>
+    const scrollLeft = document.querySelector(".scroll-btn.left");
+    const scrollRight = document.querySelector(".scroll-btn.right");
+    const bar = document.querySelector(".category-bar");
+
+    scrollLeft.addEventListener("click", () => {
+      bar.scrollLeft -= 200;
+    });
+
+    scrollRight.addEventListener("click", () => {
+      bar.scrollLeft += 200;
+    });
+
+    const items = document.querySelectorAll(".category-item");
+    items.forEach(item => {
+      item.addEventListener("click", () => {
+        items.forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+      });
+    });
+
+    let taxToggle=document.getElementById("tax-toggle");
+    taxToggle.addEventListener("click",()=>{
+      let taxToggleGst=document.getElementsByClassName("tax-toggle-gst");
+      let taxToggleBefore=document.getElementsByClassName("tax-toggle-before");
+      for(let ele of taxToggleGst){
+        if(ele.style.display!="block"){
+          ele.style.display="block";
+        }else{
+          ele.style.display="none";
+        }
+      }
+      for(let ele of taxToggleBefore){
+        if(ele.style.display!="none"){
+          ele.style.display="none";
+        }else{
+          ele.style.display="block";
+        }
+      }
+
+    })
+  </script>
+
+</body>
+

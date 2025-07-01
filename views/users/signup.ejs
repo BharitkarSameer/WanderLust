@@ -1,0 +1,23 @@
+ <% layout('layout/boilerplate') -%>
+
+ <div class="newform">
+    <h2>Sign Up</h2>
+    <form method="post" action="/signup"  >
+        <div class="newformtitle">
+            <label for="newformtitle">Username</label><br>
+            <input id="newformtitle" type="text" placeholder="username" name="username" required>
+        </div>
+        <div class="newformimage">
+            <label for="newformimage">Email</label><br>
+            <input id="newformimage" type="email" placeholder="email adress" name="email">
+        </div>
+        <div class="newformlocation">
+            <label for="newformlocation">Password</label><br>
+            <input id="newformlocation" type="password" placeholder="password" name="password" required>
+        </div>
+
+        <button class="btn btn-add">SignUp</button>
+
+
+    </form>
+ </div>

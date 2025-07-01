@@ -1,0 +1,21 @@
+
+<% if(success && success.length > 0) { %>
+        <div class="custom-alert" id="flash-alert">
+            <span><%= success %></span>
+            <button class="close-btn" onclick="dismissAlert()">×</button>
+        </div>
+<% } %>
+
+<% if (failure && failure.length > 0) { %>
+  <div class="custom-alert danger-alert" id="flash-alert-failure">
+    <span><%= failure[0] %></span>
+    <button class="close-btn" onclick="dismissDangerAlert('flash-alert-failure')">×</button>
+  </div>
+<% } %>
+
+<% if (error && error.length > 0) { %>
+  <div class="custom-alert danger-alert" id="flash-alert-failure">
+    <span><%= error %></span>
+    <button class="close-btn" onclick="dismissDangerAlert('flash-alert-failure')">×</button>
+  </div>
+<% } %>

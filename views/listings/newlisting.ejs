@@ -1,0 +1,55 @@
+ <% layout('layout/boilerplate') -%>
+
+ <div class="newform">
+    <h2>Create a New Listing</h2>
+    <form method="post" action="/listings"  enctype="multipart/form-data">
+        <div class="newformtitle">
+            <label for="newformtitle">Title</label><br>
+            <input id="newformtitle" type="text" placeholder="Add a catchy title" name="title" required>
+        </div>
+        <div class="newformdescription">
+            <label for="newformdescription">Description</label><br>
+            <textarea id="newformdescription" type="text" name="description" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image">Image</label>
+            <input type="file" id="image" name="image" class="form-control-file">
+        </div>
+        <div class="newformpriceandcountry">
+            <div class="newformprice">
+                <label for="newformprice">Price</label><br>
+                <input id="newformprice" type="text" placeholder="enter price" name="price" required>
+            </div>
+            <div class="newformcountry">
+                <label for="newformcountry">Country</label><br>
+                <input id="newformcountry" type="text" placeholder="enter the country" name="country" required>
+            </div>            
+        </div>
+        <div class="newformlocation">
+            <label for="newformlocation">Location</label><br>
+            <input id="newformlocation" type="text" placeholder="enter location" name="location" required>
+        </div>
+        <div class="categorydropdown">
+            <label for="category">Category:</label>
+            <select name="category" id="category" required>
+            <option value="">-- Select Category --</option>
+            <option value="Beach">Beach</option>
+            <option value="Mountain">Mountain</option>
+            <option value="Treehouse">Treehouse</option>
+            <option value="Skiing">Skiing</option>
+            <option value="Urban">Urban</option>
+            <option value="Villa">Villa</option>
+            <option value="Lakefront">Lakefront</option>
+            <option value="Historic">Historic</option>
+            <option value="Desert">Desert</option>
+            <option value="Island">Island</option>
+            <option value="General">Other</option>
+            </select>
+        </div>
+
+        <button class="btn btn-add">Add</button>
+
+
+    </form>
+ </div>
+

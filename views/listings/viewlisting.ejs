@@ -1,0 +1,123 @@
+  <% layout('layout/boilerplate') -%>
+
+  <body>
+    <h2 id="viewlistingcardheading">Listing Details</h2>
+    <div class="viewlistingcard">
+        
+        <div class="viewlistingcardimg">
+            <img src="<%= listing.image.url %>">
+ 
+        </div>
+        <div class="viewlistingcardinfo">
+            <p id="viewlistingcardinfoheading"><%= listing.title %></p>
+            <p><%= listing.description %></p>
+            <p>&#8377; <%= listing.price.toLocaleString("en-IN") %></p>
+            <p><%= listing.location %></p>
+            <p><%= listing.country %></p>
+            <p>Owned by: <%= listing.owner.username %></p>
+            <p>Contact Through: <%= listing.owner.email %></p>
+            <% if(user && user._id.equals(listing.owner._id)) { %>
+            <div class="btns">
+                <form method="get" action="/listings/<%= listing._id %>/edit"><button class="btn btn-edit">Edit</button></form>
+                <form method="post" action="/listings/<%= listing._id %>/delete?_method=DELETE"><button class="btn btn-delete">Delete</button></form>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <section class="review-section">
+    <h2>Reviews</h2>
+    <% if(user){ %>
+    <form class="review-form" method="POST" action="/listings/<%= listing._id %>/reviews">
+        <textarea name="comment" placeholder="Write your review here..." required></textarea>
+        <div class="range-wrapper">
+        <!-- <label for="rating">Rating: <span id="rangeValue">3</span>/5</label>
+        <input type="range" id="rating" name="rating" min="1" max="5" value="3" oninput="rangeValue.innerText = this.value"> -->
+        <fieldset class="starability-slot">
+        <legend>Rating:</legend>
+        <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="2" checked aria-label="No rating." />
+        <input type="radio" id="first-rate1" name="rating" value="1" />
+        <label for="first-rate1" title="Terrible">1 star</label>
+        <input type="radio" id="first-rate2" name="rating" value="2" />
+        <label for="first-rate2" title="Not good">2 stars</label>
+        <input type="radio" id="first-rate3" name="rating" value="3" />
+        <label for="first-rate3" title="Average">3 stars</label>
+        <input type="radio" id="first-rate4" name="rating" value="4" />
+        <label for="first-rate4" title="Very good">4 stars</label>
+        <input type="radio" id="first-rate5" name="rating" value="5" />
+        <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
+        </div>
+        <button type="submit">Submit Review</button>
+    </form>
+    <% } %>
+    <div class="reviews">
+        <% for(let ele of listing.reviews) {%>
+            <div class="review">
+            <div class="review-header">
+                <div class="avatar"><%= ele.author.username[0] %></div>
+                <div>
+                <h4>@<%= ele.author.username %></h4>
+                <p class="starability-result" style="--rating: <%= ele.rating %>;"></p>
+                
+                </div>
+            </div>
+            <!-- <p class="starability-result" id="afterusernamestars" data-rating=<%= ele.rating %>></p> -->
+            
+
+            <p><%= ele.comment %></p>
+            <p>Rating: <%= ele.rating %></p>
+            
+            <form method="post" action="/listings/<%= listing._id %>/reviews/<%= ele._id %>?_method=DELETE"><button class="reviewbtn-delete">Delete</button></form>
+            </div>
+        <% } %>
+    </div>
+    </section>
+
+
+
+    <section class="location-section">
+    <h2>Where you’ll be</h2>
+    <p><%= listing.location %>, <%= listing.country %></p>
+    <div id="map"></div>
+    </section>
+
+
+    <!-- Leaflet CSS and JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+        const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+
+        const latitude = coordinates[1];
+        const longitude = coordinates[0];
+
+        const map = L.map('map').setView([latitude, longitude], 13);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // L.marker([latitude, longitude]).addTo(map)
+        //     .bindPopup("<b><%= listing.title %></b><br><%= listing.location %>").openPopup();
+
+        const customIcon = L.icon({
+        iconUrl: '/house-solid.svg',  // adjust path as needed
+        iconSize: [30, 30],                   // size of the icon
+        iconAnchor: [20, 40],                 // point of icon which will correspond to marker's location
+        popupAnchor: [0, -35]                 // point from which popup should open relative to the iconAnchor
+        });
+
+        L.marker([latitude, longitude], { icon: customIcon }).addTo(map)
+        .bindPopup(`
+            <b><%= listing.title %></b><br>
+            Location: <%= listing.location %><br>
+            A scenic place in <%= listing.country %>.
+        `).openPopup();
+
+    </script>
+
+
+    
+  </body>
